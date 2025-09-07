@@ -1,0 +1,26 @@
+#include <DHT.h>
+#define DHTPIN 4          // DHT11 sensor pin
+#define DHTTYPE DHT11
+#define SOIL_PIN 34       // Soil moisture analog pin
+#define LDR_PIN 35        // Light sensor analog pin
+DHT dht(DHTPIN, DHTTYPE);
+void setup() {
+  Serial.begin(115200);
+  dht.begin();
+  Serial.println("Greenhouse Monitoring Started");
+}
+void loop() {
+  // Read temperature & humidity
+  float temp = dht.readTemperature();
+  float hum = dht.readHumidity();
+  // Read soil moisture (0-4095 for ESP32 ADC)
+  int soil = analogRead(SOIL_PIN);
+  // Read light level
+  int light = analogRead(LDR_PIN);
+  // Print readings to Serial / IoT
+  Serial.print("Temp: "); Serial.print(temp); Serial.print(" C, ");
+  Serial.print("Humidity: "); Serial.print(hum); Serial.print(" %, ");
+  Serial.print("Soil: "); Serial.print(soil); Serial.print(", ");
+  Serial.print("Light: "); Serial.println(light);
+  delay(5000);  // Update every 5 seconds
+}
